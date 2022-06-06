@@ -8,9 +8,11 @@ import 'package:clean_architecture/app/domain/use_cases/auth/social_login_use_ca
 class LoginController extends GetxController {
   EmailLoginUseCase emailLoginUseCase;
   SocialLoginUseCase kakaoLoginUseCase;
+  SocialLoginUseCase naverLoginUseCase;
   LoginController({
     required this.emailLoginUseCase,
     required this.kakaoLoginUseCase,
+    required this.naverLoginUseCase,
   });
 
   final formKey = GlobalKey<FormState>();
@@ -22,6 +24,12 @@ class LoginController extends GetxController {
   kakaoLogin() async {
     Get.defaultDialog(title: '로딩중', content: const CircularProgressIndicator());
     await kakaoLoginUseCase.login();
+    Get.back(closeOverlays: true);
+  }
+
+  naverLogin() async {
+    Get.defaultDialog(title: '로딩중', content: const CircularProgressIndicator());
+    await naverLoginUseCase.login();
     Get.back(closeOverlays: true);
   }
 
