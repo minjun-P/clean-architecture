@@ -1,0 +1,1 @@
+enum SocialPlatform { kakao, naver }
