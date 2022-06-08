@@ -18,21 +18,25 @@ class NaverLoginService implements SocialLoginService {
 
   @override
   Future<String?> login() async {
-    final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
-    if(naverLoginResult.status == NaverLoginStatus.loggedIn){
-      NaverAccountResult user = naverLoginResult.account;
-      SocialToFbInform userInform = SocialToFbInform(
-        id: user.id,
-        displayName: user.name,
-        email: user.email,
-        platform: SocialPlatform.naver.toString()
-      );
-      final String token = await customTokenRepository.getCustomToken(userInform.toMap());
-      final String uid = await fbLoginRepository.loginWithCustomToken(token);
-      await userRepository.uploadUser(uid: uid, data: {'name': userInform.displayName});
-      return uid;
+    try {
+      final NaverLoginResult naverLoginResult = await FlutterNaverLogin.logIn();
+      if(naverLoginResult.status == NaverLoginStatus.loggedIn){
+        NaverAccountResult user = naverLoginResult.account;
+        SocialToFbInform userInform = SocialToFbInform(
+            id: user.id,
+            displayName: user.name,
+            email: user.email,
+            platform: SocialPlatform.naver.toString()
+        );
+        final String token = await customTokenRepository.getCustomToken(userInform.toMap());
+        final String uid = await fbLoginRepository.loginWithCustomToken(token);
+        await userRepository.uploadUser(uid: uid, data: {'name': userInform.displayName});
+        return uid;
+      }
+      return null;
+    } catch (e){
+      print(e);
     }
-    return null;
   }
 
 }

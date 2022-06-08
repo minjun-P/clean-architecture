@@ -54,15 +54,22 @@ class LoginScreen extends GetView<LoginController> {
                   child: const Text('카카오 로그인')),
               TextButton(
                 child: const Text('네이버 로그인'),
-                onPressed: () async {
-                  await FlutterNaverLogin.logIn();
+                onPressed: () {
+                  controller.naverLogin();
                 },
               ),
               ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed('/login/signup');
-                  },
-                  child: const Text('회원가입'))
+                onPressed: () {
+                  FlutterNaverLogin.logOutAndDeleteToken();
+                },
+                child: const Text('네이버 언링크'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed('/login/signup');
+                },
+                child: const Text('회원가입'),
+              )
             ],
           ),
         ),
@@ -95,8 +102,7 @@ class _LoginFormField extends StatelessWidget {
         decoration: InputDecoration(
             labelText: title,
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.black))),
+                borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.black))),
       ),
     );
   }
